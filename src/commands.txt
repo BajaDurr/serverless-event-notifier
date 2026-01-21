@@ -1,0 +1,27 @@
+del output\bootstrap
+del output\function.zip
+cargo clean
+docker build -t pi-test-lambda .
+docker run --rm -v ${PWD}/output:/output pi-test-lambda cp /app/target/x86_64-unknown-linux-musl/release/pi-test /output/bootstrap
+docker run --rm -v ${PWD}/output:/output pi-test-lambda chmod +x /output/bootstrap
+cd output
+Compress-Archive -Force bootstrap function.zip
+cd ..
+
+
+
+del output\bootstrap
+del output\function.zip
+del output\notifier.zip
+cargo clean
+docker build -t pi-test-lambda .
+docker run --rm -v ${PWD}/output:/output pi-test-lambda cp /app/target/x86_64-unknown-linux-musl/release/pi-test /output/bootstrap
+docker run --rm -v ${PWD}/output:/output pi-test-lambda chmod +x /output/bootstrap
+cd output
+Compress-Archive -Force bootstrap function.zip
+cd ..
+docker run --rm -v ${PWD}/output:/output pi-test-lambda cp /app/target/x86_64-unknown-linux-musl/release/notifier /output/bootstrap
+docker run --rm -v ${PWD}/output:/output pi-test-lambda chmod +x /output/bootstrap
+cd output
+Compress-Archive -Force bootstrap notifier.zip
+cd ..
